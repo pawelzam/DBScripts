@@ -55,3 +55,10 @@ begin
     EXEC(@sql)
     PRINT @sql
 end
+
+while (exists(select  * from sys.types where is_user_defined = 1))
+begin
+    select  top 1 @sql= 'drop type ' + quotename(schema_name(schema_id)) + '.' + quotename(name) from sys.types where is_user_defined = 1    
+    EXEC(@sql)
+    PRINT @sql
+end
