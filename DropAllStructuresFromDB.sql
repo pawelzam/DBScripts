@@ -63,17 +63,16 @@ begin
     PRINT @sql
 end
 
-while (exists(Select * From sysusers Where issqlrole = 1 and name not like 'db%' and name not in ('public')))
+while (exists(SELECT * FROM sys.sysusers WHERE name not in ('guest', 'INFORMATION_SCHEMA', 'sys','public') and name not like 'db%'))
 begin
-    Select top 1 @sql = 'DROP ROLE ' + name From sysusers Where issqlrole = 1 and name not like 'db%' and name not in ('public')
+    SELECT top 1 @sql = 'DROP USER ['+name+'];' FROM sys.sysusers WHERE name not in ('guest', 'INFORMATION_SCHEMA', 'sys','public') and name not like 'db%'
     EXEC(@sql)
     PRINT @sql
 end
 
-
-while (exists(SELECT * FROM sys.sysusers WHERE name not in ('guest', 'INFORMATION_SCHEMA', 'sys','public') and name not like 'db%'))
+while (exists(Select * From sysusers Where issqlrole = 1 and name not like 'db%' and name not in ('public')))
 begin
-    SELECT top 1 @sql = 'DROP USER ['+name+'];' FROM sys.sysusers WHERE name not in ('guest', 'INFORMATION_SCHEMA', 'sys','public') and name not like 'db%'
+    Select top 1 @sql = 'DROP ROLE ' + name From sysusers Where issqlrole = 1 and name not like 'db%' and name not in ('public')
     EXEC(@sql)
     PRINT @sql
 end
