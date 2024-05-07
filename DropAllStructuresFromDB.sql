@@ -33,11 +33,11 @@ BEGIN
     PRINT @sql
 END
 
-WHILE(EXISTS(SELECT * from INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME != '__MigrationHistory' AND TABLE_NAME != 'database_firewall_rules' AND TABLE_TYPE != 'VIEW'))
+WHILE(EXISTS(SELECT * from INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME != 'database_firewall_rules' AND TABLE_TYPE != 'VIEW'))
 BEGIN
     SELECT TOP 1 @sql=('DROP TABLE ' + TABLE_SCHEMA + '.[' + TABLE_NAME + ']')
     FROM INFORMATION_SCHEMA.TABLES
-    WHERE TABLE_NAME != '__MigrationHistory' AND TABLE_NAME != 'database_firewall_rules' 
+    WHERE TABLE_NAME != 'database_firewall_rules' 
     EXEC(@sql)
     PRINT @sql
 END
